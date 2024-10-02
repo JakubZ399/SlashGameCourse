@@ -4,7 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+#include "InputActionValue.h"
+
 #include "SlashCharacter.generated.h"
+
+class USpringArmComponent;
+class UCameraComponent;
+
+class UInputMappingContext;
+class UInputAction;
 
 UCLASS()
 class SLASHGAMECOURSE_API ASlashCharacter : public ACharacter
@@ -12,18 +21,28 @@ class SLASHGAMECOURSE_API ASlashCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ASlashCharacter();
-
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 protected:
-	// Called when the game starts or when spawned
+	
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputMappingContext* InputMappingContext;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* MoveInput;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* LookInput;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
 
+private:
+
+	UPROPERTY(EditDefaultsOnly)
+	UCameraComponent* CameraBoom;
+	UPROPERTY(EditDefaultsOnly)
+	USpringArmComponent* SpringArmComponent;
 };

@@ -15,6 +15,8 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 
+class UGroomComponent;
+
 UCLASS()
 class SLASHGAMECOURSE_API ASlashCharacter : public ACharacter
 {
@@ -45,4 +47,11 @@ private:
 	UCameraComponent* CameraBoom;
 	UPROPERTY(EditDefaultsOnly)
 	USpringArmComponent* SpringArmComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = Hair)
+	UGroomComponent* Hair;
+	
+	UPROPERTY(VisibleAnywhere, Category = Hair)
+	UGroomComponent* Eyebrows;
+	
 };

@@ -76,7 +76,7 @@ void ASlashCharacter::Look(const FInputActionValue& Value)
 	float ValueX = LookValue.X;
 	float ValueY = LookValue.Y;
 
-	AddControllerYawInput(-ValueX);
+	AddControllerYawInput(ValueX);
 	AddControllerPitchInput(ValueY);
 }
 

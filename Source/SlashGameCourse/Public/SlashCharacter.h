@@ -37,6 +37,8 @@ protected:
 	UInputAction* MoveInput;
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* LookInput;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* JumpInput;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);

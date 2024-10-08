@@ -13,6 +13,7 @@ class UInputMappingContext;
 class UInputAction;
 class UGroomComponent;
 class AItem;
+class UAnimMontage;
 
 UCLASS()
 class SLASHGAMECOURSE_API ASlashCharacter : public ACharacter
@@ -38,10 +39,13 @@ protected:
 	UInputAction* JumpInput;
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* EquipInput;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* AttackInput;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void EKeyPressed();
+	void Attack();
 
 private:
 
@@ -59,6 +63,11 @@ private:
 
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlapingItem;
+
+	//Animation montages
+
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* AttackMontage;
 
 public:
 

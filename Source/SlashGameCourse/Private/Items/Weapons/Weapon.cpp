@@ -3,11 +3,20 @@
 
 #include "Items/Weapons/Weapon.h"
 #include "SlashCharacter.h"
+#include "Components/SpotLightComponent.h"
+
+AWeapon::AWeapon()
+{
+	SpotlightItem = CreateDefaultSubobject<USpotLightComponent>(TEXT("Spotlight"));
+	SpotlightItem->SetupAttachment((RootComponent));
+}
 
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 {
 	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
+
+	SpotlightItem->DestroyComponent();
 }
 
 void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

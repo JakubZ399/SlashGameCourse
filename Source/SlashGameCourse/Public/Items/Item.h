@@ -28,8 +28,6 @@ protected:
 	
 private:
 
-
-
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* Sphere;
 	

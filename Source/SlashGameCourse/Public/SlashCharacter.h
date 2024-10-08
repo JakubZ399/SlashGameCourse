@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -11,11 +9,10 @@
 
 class USpringArmComponent;
 class UCameraComponent;
-
 class UInputMappingContext;
 class UInputAction;
-
 class UGroomComponent;
+class AItem;
 
 UCLASS()
 class SLASHGAMECOURSE_API ASlashCharacter : public ACharacter
@@ -39,9 +36,12 @@ protected:
 	UInputAction* LookInput;
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* JumpInput;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* EquipInput;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void EKeyPressed();
 
 private:
 
@@ -52,8 +52,14 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = Hair)
 	UGroomComponent* Hair;
-	
 	UPROPERTY(VisibleAnywhere, Category = Hair)
 	UGroomComponent* Eyebrows;
+
+	UPROPERTY(VisibleInstanceOnly)
+	AItem* OverlapingItem;
+
+public:
+
+	FORCEINLINE void SetOverlapingItem(AItem* Item) { OverlapingItem = Item; }
 	
 };

@@ -10,6 +10,9 @@
 
 #include "GroomComponent.h"
 
+#include "Items/Item.h"
+#include "Items/Weapons/Weapon.h"
+
 ASlashCharacter::ASlashCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -66,6 +69,7 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		EnhancedInputComponent->BindAction(MoveInput, ETriggerEvent::Triggered, this, &ASlashCharacter::Move);
 		EnhancedInputComponent->BindAction(LookInput, ETriggerEvent::Triggered, this, &ASlashCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpInput, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(EquipInput, ETriggerEvent::Triggered, this, &ASlashCharacter::EKeyPressed);
 	}
 
 }
@@ -78,6 +82,15 @@ void ASlashCharacter::Look(const FInputActionValue& Value)
 
 	AddControllerYawInput(ValueX);
 	AddControllerPitchInput(ValueY);
+}
+
+void ASlashCharacter::EKeyPressed()
+{
+	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlapingItem);
+	if (OverlappingWeapon)
+	{
+		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+	}
 }
 
 void ASlashCharacter::Move(const FInputActionValue& Value)

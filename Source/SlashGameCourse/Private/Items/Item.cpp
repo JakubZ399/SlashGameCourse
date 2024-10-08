@@ -1,6 +1,7 @@
 #include "Items/Item.h"
 
 #include "Components/SphereComponent.h"
+#include "SlashCharacter.h"
 
 AItem::AItem()
 {
@@ -26,13 +27,21 @@ void AItem::BeginPlay()
 void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
+	if (SlashCharacter)
+	{
+		SlashCharacter->SetOverlapingItem(this);
+	}
 }
 
 void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-
+	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
+	if (SlashCharacter)
+	{
+		SlashCharacter->SetOverlapingItem(nullptr);
+	}
 }
 
 void AItem::Tick(float DeltaTime)

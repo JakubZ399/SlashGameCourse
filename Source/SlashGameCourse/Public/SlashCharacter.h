@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-
+#include "CharacterTypes.h"
 #include "InputActionValue.h"
 
 #include "SlashCharacter.generated.h"
@@ -13,14 +13,6 @@ class UInputMappingContext;
 class UInputAction;
 class UGroomComponent;
 class AItem;
-
-UENUM(BlueprintType)
-enum class ECharacterState : uint8
-{
-	ECS_Unequipped UMETA(DisplayName = "Unequipped"),
-	ECS_EquippedOneHandedWeapon UMETA(DisplayName = "Equipped One-Handed Weapon"),
-	ECS_EquippedTwoHandedWeapon UMETA(DisplayName = "Equipped Two-Handed Weapon")
-};
 
 UCLASS()
 class SLASHGAMECOURSE_API ASlashCharacter : public ACharacter
@@ -71,5 +63,6 @@ private:
 public:
 
 	FORCEINLINE void SetOverlapingItem(AItem* Item) { OverlapingItem = Item; }
+	FORCEINLINE ECharacterState GetCharacterState() const {	return CharacterState; }
 	
 };

@@ -84,15 +84,6 @@ void ASlashCharacter::Look(const FInputActionValue& Value)
 	AddControllerPitchInput(ValueY);
 }
 
-void ASlashCharacter::EKeyPressed()
-{
-	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlapingItem);
-	if (OverlappingWeapon)
-	{
-		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
-	}
-}
-
 void ASlashCharacter::Move(const FInputActionValue& Value)
 {
 	FVector2d MoveValue = Value.Get<FVector2d>();
@@ -107,4 +98,15 @@ void ASlashCharacter::Move(const FInputActionValue& Value)
 	
 	AddMovementInput(ForwardDirection, ValueY);
 	AddMovementInput(RightDirection, ValueX);
+}
+
+void ASlashCharacter::EKeyPressed()
+{
+	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlapingItem);
+	if (OverlappingWeapon)
+	{
+		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+	}
+
+	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 }

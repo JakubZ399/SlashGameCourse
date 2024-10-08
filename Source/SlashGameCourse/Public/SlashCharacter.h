@@ -14,6 +14,14 @@ class UInputAction;
 class UGroomComponent;
 class AItem;
 
+UENUM(BlueprintType)
+enum class ECharacterState : uint8
+{
+	ECS_Unequipped UMETA(DisplayName = "Unequipped"),
+	ECS_EquippedOneHandedWeapon UMETA(DisplayName = "Equipped One-Handed Weapon"),
+	ECS_EquippedTwoHandedWeapon UMETA(DisplayName = "Equipped Two-Handed Weapon")
+};
+
 UCLASS()
 class SLASHGAMECOURSE_API ASlashCharacter : public ACharacter
 {
@@ -45,6 +53,8 @@ protected:
 
 private:
 
+	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+	
 	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* CameraBoom;
 	UPROPERTY(EditDefaultsOnly)

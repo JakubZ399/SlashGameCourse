@@ -42,14 +42,24 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* AttackInput;
 
+	//Calbacks for EnhancedInput
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void EKeyPressed();
 	void Attack();
 
+	//Play montage functions
+	void PlayAttackMontage();
+
+	UFUNCTION(BlueprintCallable)
+	void AttackEnd();
+	bool CanAttak();
+
 private:
 
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 	
 	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* CameraBoom;
@@ -75,3 +85,4 @@ public:
 	FORCEINLINE ECharacterState GetCharacterState() const {	return CharacterState; }
 	
 };
+

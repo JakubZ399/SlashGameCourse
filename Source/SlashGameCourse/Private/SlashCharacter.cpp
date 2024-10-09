@@ -88,19 +88,25 @@ void ASlashCharacter::Look(const FInputActionValue& Value)
 
 void ASlashCharacter::Move(const FInputActionValue& Value)
 {
-	FVector2d MoveValue = Value.Get<FVector2d>();
-	float ValueX = MoveValue.X;
-	float ValueY = MoveValue.Y;
+	if (ActionState == EActionState::EAS_Attacking) return;
+	if (Controller)
+	{
+		FVector2d MoveValue = Value.Get<FVector2d>();
+		float ValueX = MoveValue.X;
+		float ValueY = MoveValue.Y;
 
-	FRotator Rotation = GetControlRotation();
-	FRotator YawRotation(0, Rotation.Yaw, 0);
+		FRotator Rotation = GetControlRotation();
+		FRotator YawRotation(0, Rotation.Yaw, 0);
 	
-	FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 	
-	AddMovementInput(ForwardDirection, ValueY);
-	AddMovementInput(RightDirection, ValueX);
+		AddMovementInput(ForwardDirection, ValueY);
+		AddMovementInput(RightDirection, ValueX);
+	}
+	
 }
+
 
 void ASlashCharacter::EKeyPressed()
 {
@@ -115,11 +121,26 @@ void ASlashCharacter::EKeyPressed()
 
 void ASlashCharacter::Attack()
 {
+	if (CanAttak())
+	{
+		PlayAttackMontage();
+		ActionState = EActionState::EAS_Attacking;
+	}
+}
+
+bool ASlashCharacter::CanAttak()
+{
+	return ActionState == EActionState::EAS_Unoccupied &&
+		CharacterState != ECharacterState::ECS_Unequipped;
+}
+
+void ASlashCharacter::PlayAttackMontage()
+{
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && AttackMontage)
 	{
 		AnimInstance->Montage_Play(AttackMontage);
-		int32 Selection = FMath::RandRange(0, 2);
+		const int32 Selection = FMath::RandRange(0, 2);
 		FName SectionName = FName();
 		switch (Selection)
 		{
@@ -137,4 +158,9 @@ void ASlashCharacter::Attack()
 		}
 		AnimInstance->Montage_JumpToSection(SectionName,AttackMontage);
 	}
+}
+
+void ASlashCharacter::AttackEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
 }

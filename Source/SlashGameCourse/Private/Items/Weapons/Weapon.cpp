@@ -4,6 +4,7 @@
 #include "Items/Weapons/Weapon.h"
 #include "SlashCharacter.h"
 #include "Components/SpotLightComponent.h"
+#include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 AWeapon::AWeapon()
@@ -24,6 +25,10 @@ void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 	if (EquipSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, EquipSound, GetActorLocation());
+	}
+	if (Sphere)
+	{
+		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 	
 	SpotlightItem->DestroyComponent();

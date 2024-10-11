@@ -25,10 +25,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* ItemMesh;
-	
-private:
-
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* Sphere;
+	
+private:
 	
 };

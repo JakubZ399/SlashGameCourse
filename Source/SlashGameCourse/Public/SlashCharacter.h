@@ -7,6 +7,7 @@
 
 #include "SlashCharacter.generated.h"
 
+class AWeapon;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -55,6 +56,17 @@ protected:
 	void AttackEnd();
 	bool CanAttak();
 
+	void PlayEquipMontage(FName SectionName);
+	bool CanDisarm();
+	bool CanArm();
+
+	UFUNCTION(BlueprintCallable)
+	void Disarm();
+	UFUNCTION(BlueprintCallable)
+	void Arm();
+	UFUNCTION(BlueprintCallable)
+	void FinishEquip();
+
 private:
 
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
@@ -72,17 +84,21 @@ private:
 	UGroomComponent* Eyebrows;
 
 	UPROPERTY(VisibleInstanceOnly)
-	AItem* OverlapingItem;
+	AItem* OverlappingItem;
+
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	AWeapon* EquippedWeapon;
 
 	//Animation montages
 
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* AttackMontage;
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* EquipMontage;
 
 public:
 
-	FORCEINLINE void SetOverlapingItem(AItem* Item) { OverlapingItem = Item; }
+	FORCEINLINE void SetOverlapingItem(AItem* Item) { OverlappingItem = Item; }
 	FORCEINLINE ECharacterState GetCharacterState() const {	return CharacterState; }
 	
 };
-

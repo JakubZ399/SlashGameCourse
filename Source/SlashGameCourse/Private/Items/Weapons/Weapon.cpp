@@ -4,6 +4,7 @@
 #include "Items/Weapons/Weapon.h"
 #include "SlashCharacter.h"
 #include "Components/SpotLightComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AWeapon::AWeapon()
 {
@@ -11,11 +12,20 @@ AWeapon::AWeapon()
 	SpotlightItem->SetupAttachment((RootComponent));
 }
 
-void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
+void AWeapon::AttachMeshToSocket(USceneComponent* InParent, FName InSocketName)
 {
 	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
+}
 
+void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
+{
+	AttachMeshToSocket(InParent, InSocketName);
+	if (EquipSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, EquipSound, GetActorLocation());
+	}
+	
 	SpotlightItem->DestroyComponent();
 }
 

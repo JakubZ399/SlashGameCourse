@@ -6,9 +6,7 @@
 #include "Items/Item.h"
 #include "Weapon.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class SLASHGAMECOURSE_API AWeapon : public AItem
 {
@@ -17,6 +15,7 @@ class SLASHGAMECOURSE_API AWeapon : public AItem
 public:
 
 	AWeapon();
+	void AttachMeshToSocket(USceneComponent* InParent, FName InSocketName);
 	void Equip(USceneComponent* InParent, FName InSocketName);
 	
 protected:
@@ -28,4 +27,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	class USpotLightComponent* SpotlightItem;
+
+	UPROPERTY(EditAnywhere, Category = WeaponAudio)
+	class USoundBase* EquipSound;
 };

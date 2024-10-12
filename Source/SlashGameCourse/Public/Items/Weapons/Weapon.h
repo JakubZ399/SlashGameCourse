@@ -6,6 +6,9 @@
 #include "Items/Item.h"
 #include "Weapon.generated.h"
 
+class USoundBase;
+class UBoxComponent;
+class USpotLightComponent;
 
 UCLASS()
 class SLASHGAMECOURSE_API AWeapon : public AItem
@@ -26,8 +29,11 @@ protected:
 private:
 
 	UPROPERTY(VisibleAnywhere)
-	class USpotLightComponent* SpotlightItem;
+	USpotLightComponent* SpotlightItem;
 
+	UPROPERTY(VisibleAnywhere)
+	UBoxComponent* WeaponBox;
+	
 	UPROPERTY(EditAnywhere, Category = WeaponAudio)
-	class USoundBase* EquipSound;
+	USoundBase* EquipSound;
 };

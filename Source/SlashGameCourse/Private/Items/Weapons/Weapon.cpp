@@ -3,12 +3,16 @@
 
 #include "Items/Weapons/Weapon.h"
 #include "SlashCharacter.h"
+#include "Components/BoxComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 AWeapon::AWeapon()
 {
+	WeaponBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Weapon Box Collider"));
+	WeaponBox->SetupAttachment(RootComponent);
+	
 	SpotlightItem = CreateDefaultSubobject<USpotLightComponent>(TEXT("Spotlight"));
 	SpotlightItem->SetupAttachment((RootComponent));
 }

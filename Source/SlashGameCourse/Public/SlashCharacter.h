@@ -50,7 +50,7 @@ protected:
 	void Attack();
 
 	//Play montage functions
-	void PlayAttackMontage();
+	void PlayAttackMontage(UAnimMontage* AttackMontage);
 
 	UFUNCTION(BlueprintCallable)
 	void AttackEnd();
@@ -92,7 +92,12 @@ private:
 	//Animation montages
 
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
-	UAnimMontage* AttackMontage;
+	UAnimMontage* AttackOneHandedMontage;
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* AttackTwoHandedMontage;
+
+	int32 AttackMontageSelection;
+	
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* EquipMontage;
 

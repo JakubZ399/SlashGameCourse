@@ -57,4 +57,8 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = WeaponAudio)
 	USoundBase* EquipSound;
+
+public:
+
+	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }
 };

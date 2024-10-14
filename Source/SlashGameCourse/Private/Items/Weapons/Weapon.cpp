@@ -14,6 +14,9 @@ AWeapon::AWeapon()
 {
 	WeaponBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Weapon Box Collider"));
 	WeaponBox->SetupAttachment(RootComponent);
+	WeaponBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	WeaponBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	WeaponBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	
 	SpotlightItem = CreateDefaultSubobject<USpotLightComponent>(TEXT("Spotlight"));
 	SpotlightItem->SetupAttachment((RootComponent));
@@ -28,9 +31,6 @@ void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	WeaponBox->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnWeaponBoxOverlap);
-	WeaponBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	WeaponBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-	WeaponBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 }
 
 

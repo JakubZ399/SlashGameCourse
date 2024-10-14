@@ -31,3 +31,8 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void AEnemy::GetHit()
+{
+	Destroy();
+}
+

@@ -1,5 +1,6 @@
 #include "Enemy/Enemy.h"
 #include "Components/CapsuleComponent.h"
+#include "SlashGameCourse/DebugMacros.h"
 
 AEnemy::AEnemy()
 {
@@ -31,8 +32,8 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void AEnemy::GetHit()
+void AEnemy::GetHit(const FVector& ImpactPoint)
 {
-	Destroy();
+	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Blue);
 }
 

@@ -87,7 +87,7 @@ void AWeapon::OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 		IHitInterface* HitInterface = Cast<IHitInterface>(HitResult.GetActor());
 		if (HitInterface)
 		{
-			HitInterface->GetHit();
+			HitInterface->GetHit(HitResult.ImpactPoint);
 		}
 	}
 	

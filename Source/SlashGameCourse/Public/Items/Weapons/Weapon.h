@@ -31,6 +31,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 	EWeaponType WeaponType;
+
+	TArray<AActor*> IgnoreActors;
 	
 protected:
 
@@ -57,6 +59,7 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = WeaponAudio)
 	USoundBase* EquipSound;
+
 
 public:
 

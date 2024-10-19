@@ -1,5 +1,6 @@
 #include "Enemy/Enemy.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "SlashGameCourse/DebugMacros.h"
 
@@ -67,15 +68,25 @@ void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
 
 	PlayReactMontage(Section);
 	
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Forward * 60.f, 8.f, FColor::Red, 5.f, 2.f);
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + ToHit * 60.f, 8.f, FColor::Green, 5.f, 2.f);
+	//UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Forward * 60.f, 8.f, FColor::Red, 5.f, 2.f);
+	//UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + ToHit * 60.f, 8.f, FColor::Green, 5.f, 2.f);
 }
 
 void AEnemy::GetHit(const FVector& ImpactPoint)
 {
-	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Blue);
+	//DRAW_SPHERE_COLOR(ImpactPoint, FColor::Blue);
 
 	DirectionalHitReact(ImpactPoint);
+
+	if (HitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, HitSound, ImpactPoint, FRotator::ZeroRotator);
+	}
+	if (BloodParticle)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(this, BloodParticle, ImpactPoint);
+	}
+	
 }
 
 void AEnemy::PlayReactMontage(const FName& SectionName)

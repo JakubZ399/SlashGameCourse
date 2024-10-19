@@ -33,6 +33,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = Animation)
 	UAnimMontage* HitReactMontage;
+
+	UPROPERTY(EditAnywhere, Category = Audio)
+	USoundBase* HitSound;
+	
+	UPROPERTY(EditAnywhere, Category = Particle)
+	UParticleSystem* BloodParticle;
 	
 public:	
 	

@@ -8,7 +8,7 @@ public class SlashGameCourse : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "HairStrandsCore", "Niagara", "MetasoundEngine"});
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "HairStrandsCore", "Niagara", "MetasoundEngine", "GeometryCollectionEngine"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

@@ -72,7 +72,7 @@ void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
 	//UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + ToHit * 60.f, 8.f, FColor::Green, 5.f, 2.f);
 }
 
-void AEnemy::GetHit(const FVector& ImpactPoint)
+void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	//DRAW_SPHERE_COLOR(ImpactPoint, FColor::Blue);
 

@@ -5,6 +5,7 @@
 #include "Interfaces/HitInterface.h"
 #include "BreakableActor.generated.h"
 
+class ATreasure;
 class UGeometryCollectionComponent;
 
 UCLASS()
@@ -17,15 +18,22 @@ public:
 	ABreakableActor();
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void GetHit(const FVector& ImpactPoint) override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 
 protected:
 
 	virtual void BeginPlay() override;
-
-private:	
-
+	
 	UPROPERTY(VisibleAnywhere)
 	UGeometryCollectionComponent* GeometryCollection;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class UCapsuleComponent* Capsule;
+
+private:	
+	
+	UPROPERTY(EditDefaultsOnly, Category = Treasure)
+	TArray<TSubclassOf<ATreasure>> TreasureClasses;
+
+	bool bBroken = false;
 };

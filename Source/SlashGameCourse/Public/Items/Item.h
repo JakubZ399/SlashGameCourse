@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+class UNiagaraComponent;
 class USphereComponent;
 
 UCLASS()
@@ -27,6 +28,9 @@ protected:
 	UStaticMeshComponent* ItemMesh;
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* Sphere;
+
+	UPROPERTY(EditAnywhere, Category = Effetcs)
+	UNiagaraComponent* EmbersEffect;
 	
 private:
 	

@@ -4,6 +4,7 @@
 #include "Items/Weapons/Weapon.h"
 
 #include "KismetTraceUtils.h"
+#include "NiagaraComponent.h"
 #include "SlashCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/SpotLightComponent.h"
@@ -51,6 +52,10 @@ void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 	if (Sphere)
 	{
 		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+	if (EmbersEffect)
+	{
+		EmbersEffect->Deactivate();
 	}
 	
 	SpotlightItem->DestroyComponent();

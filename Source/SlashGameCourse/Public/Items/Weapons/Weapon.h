@@ -27,7 +27,7 @@ public:
 	AWeapon();
 
 	void AttachMeshToSocket(USceneComponent* InParent, FName InSocketName);
-	void Equip(USceneComponent* InParent, FName InSocketName);
+	void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
 
 	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 	EWeaponType WeaponType;
@@ -62,6 +62,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = WeaponAudio)
 	USoundBase* EquipSound;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	float Damage = 20.f;
 
 
 public:

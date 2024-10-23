@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -13,16 +11,24 @@ class SLASHGAMECOURSE_API UAttributeComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
+
 	UAttributeComponent();
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+protected:
+
+	virtual void BeginPlay() override;
+
+private:
+
+	UPROPERTY(EditAnywhere, Category = Stats)
+	float Health;
+
+	UPROPERTY(EditAnywhere, Category = Stats)
+	float MaxHealth;
+
+public:
+
+	void RecieveDamage(float Damage);
+	float GetHealthPercent();
 };

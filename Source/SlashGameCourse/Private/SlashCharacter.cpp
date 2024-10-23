@@ -126,12 +126,12 @@ void ASlashCharacter::EKeyPressed()
 	{
 		if (OverlappingWeapon->WeaponType == EWeaponType::EOneHandedWeapon)
 		{
-			OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+			OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
 			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 		}
 		else if (OverlappingWeapon->WeaponType == EWeaponType::ETwoHandedWeapon)
 		{
-			OverlappingWeapon->Equip(GetMesh(), FName("TwoHandedSocket"));
+			OverlappingWeapon->Equip(GetMesh(), FName("TwoHandedSocket"), this, this);
 			CharacterState = ECharacterState::ECS_EquippedTwoHandedWeapon;
 		}
 		OverlappingItem = nullptr;

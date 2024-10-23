@@ -7,6 +7,9 @@
 #include "Interfaces/HitInterface.h"
 #include "Enemy.generated.h"
 
+class UHealthBarComponent;
+class UWidgetComponent;
+class UAttributeComponent;
 class UAnimMontage;
 
 UCLASS()
@@ -19,9 +22,11 @@ public:
 	AEnemy();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 	void DirectionalHitReact(const FVector& ImpactPoint);
-
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 protected:
 
@@ -31,6 +36,12 @@ protected:
 
 private:
 
+	UPROPERTY(VisibleAnywhere, Category = Stats)
+	UAttributeComponent* AttributeComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = Stats)
+	UHealthBarComponent* HealthBarWidget;
+	
 	UPROPERTY(EditDefaultsOnly, Category = Animation)
 	UAnimMontage* HitReactMontage;
 

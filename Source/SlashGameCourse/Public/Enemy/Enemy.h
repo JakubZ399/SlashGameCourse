@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/HitInterface.h"
+#include "CharacterTypes.h"
 #include "Enemy.generated.h"
 
 class UHealthBarComponent;
@@ -33,6 +34,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	void PlayReactMontage(const FName& SectionName);
+	void PlayDeathMontage();
+
+	UPROPERTY(BlueprintReadWrite)
+	EDeathPose DeathPose = EDeathPose::EDP_Alive;
 
 private:
 
@@ -45,12 +50,22 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = Animation)
 	UAnimMontage* HitReactMontage;
 
+	UPROPERTY(EditDefaultsOnly, Category = Animation)
+	UAnimMontage* DeathMontage;
+
 	UPROPERTY(EditAnywhere, Category = Audio)
 	USoundBase* HitSound;
 	
 	UPROPERTY(EditAnywhere, Category = Particle)
 	UParticleSystem* BloodParticle;
-	
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	AActor* CombatTarget;
+
+	UPROPERTY(EditAnywhere)
+	double CombatRadius = 500.f;
+
+
 public:	
 	
 };

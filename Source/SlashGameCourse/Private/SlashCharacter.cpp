@@ -13,7 +13,6 @@
 #include "Items/Item.h"
 #include "Items/Weapons/Weapon.h"
 #include "Animation/AnimMontage.h"
-#include "Components/BoxComponent.h"
 
 ASlashCharacter::ASlashCharacter()
 {
@@ -78,16 +77,6 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	}
 
 }
-
-void ASlashCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled)
-{
-	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())
-	{
-		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
-		EquippedWeapon->IgnoreActors.Empty();
-	}
-}
-
 
 void ASlashCharacter::Look(const FInputActionValue& Value)
 {
@@ -169,7 +158,7 @@ void ASlashCharacter::EKeyPressed()
 
 void ASlashCharacter::Attack()
 {
-	if (CanAttak())
+	if (CanAttack())
 	{
 		if (EquippedWeapon->WeaponType == EWeaponType::EOneHandedWeapon)
 		{
@@ -183,7 +172,7 @@ void ASlashCharacter::Attack()
 	}
 }
 
-bool ASlashCharacter::CanAttak()
+bool ASlashCharacter::CanAttack()
 {
 	return ActionState == EActionState::EAS_Unoccupied &&
 		CharacterState != ECharacterState::ECS_Unequipped;

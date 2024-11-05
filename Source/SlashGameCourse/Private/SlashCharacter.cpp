@@ -33,12 +33,6 @@ ASlashCharacter::ASlashCharacter()
 	Eyebrows->SetupAttachment(GetMesh());
 	Eyebrows->AttachmentName = FString("head");
 
-}
-
-void ASlashCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
@@ -47,6 +41,12 @@ void ASlashCharacter::BeginPlay()
 
 	SpringArmComponent->bUsePawnControlRotation = true;
 
+}
+
+void ASlashCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
 	if (APlayerController*  PlayerController = Cast<APlayerController>(Controller))
 	{
 		if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -54,6 +54,8 @@ void ASlashCharacter::BeginPlay()
 			Subsystem->AddMappingContext(InputMappingContext, 0);
 		}
 	}
+
+	Tags.Add(FName("Player"));
 }
 
 void ASlashCharacter::Tick(float DeltaTime)

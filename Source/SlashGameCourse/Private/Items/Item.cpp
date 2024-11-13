@@ -8,6 +8,8 @@ AItem::AItem()
 	PrimaryActorTick.bCanEverTick = true;
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Item Mesh"));
+	ItemMesh->SetCollisionResponseToChannels(ECollisionResponse::ECR_Ignore);
+	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	RootComponent = ItemMesh;
 
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
@@ -15,7 +17,6 @@ AItem::AItem()
 
 	EmbersEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Embers Effects"));
 	EmbersEffect->SetupAttachment(GetRootComponent());
-
 }
 
 void AItem::BeginPlay()

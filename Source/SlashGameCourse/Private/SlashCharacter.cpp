@@ -1,15 +1,11 @@
 #include "SlashCharacter.h"
-
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Components/InputComponent.h"
-
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-
 #include "GroomComponent.h"
-
 #include "Items/Item.h"
 #include "Items/Weapons/Weapon.h"
 #include "Animation/AnimMontage.h"
@@ -42,21 +38,6 @@ ASlashCharacter::ASlashCharacter()
 
 }
 
-void ASlashCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-
-	if (APlayerController*  PlayerController = Cast<APlayerController>(Controller))
-	{
-		if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(InputMappingContext, 0);
-		}
-	}
-
-	Tags.Add(FName("Player"));
-}
-
 void ASlashCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -78,14 +59,19 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 }
 
-void ASlashCharacter::Look(const FInputActionValue& Value)
+void ASlashCharacter::BeginPlay()
 {
-	FVector2d LookValue = Value.Get<FVector2d>();
-	float ValueX = LookValue.X;
-	float ValueY = LookValue.Y;
+	Super::BeginPlay();
 
-	AddControllerYawInput(ValueX);
-	AddControllerPitchInput(ValueY);
+	if (APlayerController*  PlayerController = Cast<APlayerController>(Controller))
+	{
+		if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(InputMappingContext, 0);
+		}
+	}
+
+	Tags.Add(FName("Player"));
 }
 
 void ASlashCharacter::Move(const FInputActionValue& Value)
@@ -107,6 +93,16 @@ void ASlashCharacter::Move(const FInputActionValue& Value)
 		AddMovementInput(RightDirection, ValueX);
 	}
 	
+}
+
+void ASlashCharacter::Look(const FInputActionValue& Value)
+{
+	FVector2d LookValue = Value.Get<FVector2d>();
+	float ValueX = LookValue.X;
+	float ValueY = LookValue.Y;
+
+	AddControllerYawInput(ValueX);
+	AddControllerPitchInput(ValueY);
 }
 
 void ASlashCharacter::EKeyPressed()
@@ -160,14 +156,7 @@ void ASlashCharacter::Attack()
 {
 	if (CanAttack())
 	{
-		if (EquippedWeapon->WeaponType == EWeaponType::EOneHandedWeapon)
-		{
-			PlayAttackMontage(AttackOneHandedMontage);
-		}
-		else if (EquippedWeapon->WeaponType == EWeaponType::ETwoHandedWeapon)
-		{
-			PlayAttackMontage(AttackTwoHandedMontage);
-		}
+		PlayAttackMontage();
 		ActionState = EActionState::EAS_Attacking;
 	}
 }
@@ -178,11 +167,27 @@ bool ASlashCharacter::CanAttack()
 		CharacterState != ECharacterState::ECS_Unequipped;
 }
 
+void ASlashCharacter::AttackEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
+void ASlashCharacter::PlayEquipMontage(FName SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && EquipMontage)
+	{
+		AnimInstance->Montage_Play(EquipMontage);
+		AnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
+	}
+}
+
 bool ASlashCharacter::CanDisarm()
 {
 	return ActionState == EActionState::EAS_Unoccupied && 
 		CharacterState != ECharacterState::ECS_Unequipped;
 }
+
 bool ASlashCharacter::CanArm()
 {
 	return ActionState == EActionState::EAS_Unoccupied &&
@@ -190,7 +195,7 @@ bool ASlashCharacter::CanArm()
 		EquippedWeapon;
 }
 
-void ASlashCharacter::Disarm()
+void ASlashCharacter::AttachWeaponToBack()
 {
 	if (EquippedWeapon)
 	{
@@ -198,7 +203,7 @@ void ASlashCharacter::Disarm()
 	}
 }
 
-void ASlashCharacter::Arm()
+void ASlashCharacter::AttachWeaponToHand()
 {
 	if (EquippedWeapon->WeaponType == EWeaponType::EOneHandedWeapon)
 	{
@@ -215,51 +220,6 @@ void ASlashCharacter::FinishEquip()
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
-void ASlashCharacter::PlayAttackMontage(UAnimMontage* AttackMontage)
-{
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && AttackMontage)
-	{
-		AnimInstance->Montage_Play(AttackMontage);
-		if (EquippedWeapon->WeaponType == EWeaponType::EOneHandedWeapon)
-		{
-			AttackMontageSelection = FMath::RandRange(0, 2);
-		}
-		else if(EquippedWeapon->WeaponType == EWeaponType::ETwoHandedWeapon)
-		{
-			AttackMontageSelection = FMath::RandRange(0, 1);
-		}
-		FName SectionName = FName();
-		switch (AttackMontageSelection)
-		{
-		case 0:
-			SectionName = FName("Attack1");
-			break;
-		case 1:
-			SectionName = FName("Attack2");
-			break;
-		case 2:
-			SectionName = FName("Attack3");
-			break;
-		default:
-			break;
-		}
-		AnimInstance->Montage_JumpToSection(SectionName,AttackMontage);
-	}
-}
-
-void ASlashCharacter::PlayEquipMontage(FName SectionName)
-{
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && EquipMontage)
-	{
-		AnimInstance->Montage_Play(EquipMontage);
-		AnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
-	}
-}
 
 
-void ASlashCharacter::AttackEnd()
-{
-	ActionState = EActionState::EAS_Unoccupied;
-}
+

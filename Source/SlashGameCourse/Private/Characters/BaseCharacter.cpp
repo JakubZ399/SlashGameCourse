@@ -1,8 +1,9 @@
 #include "Characters/BaseCharacter.h"
-
-#include "Components/AttributeComponent.h"
 #include "Components/BoxComponent.h"
 #include "Items/Weapons/Weapon.h"
+#include "Components/AttributeComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -23,10 +24,6 @@ void ABaseCharacter::Attack()
 }
 
 void ABaseCharacter::Die()
-{
-}
-
-void ABaseCharacter::PlayAttackMontage(UAnimMontage* AttackMontage)
 {
 }
 
@@ -75,13 +72,77 @@ void ABaseCharacter::DirectionalHitReact(const FVector& ImpactPoint)
 	PlayHitReactMontage(Section);
 }
 
+void ABaseCharacter::PlayHitSound(const FVector& ImpactPoint)
+{
+	if (HitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, HitSound, ImpactPoint, FRotator::ZeroRotator);
+	}
+}
+
+void ABaseCharacter::SpawnHitParticle(const FVector& ImpactPoint)
+{
+	if (BloodParticle)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(this, BloodParticle, ImpactPoint);
+	}
+}
+
+void ABaseCharacter::HandleDamage(float DamageAmount)
+{
+	if (AttributeComponent)
+	{
+		AttributeComponent->RecieveDamage(DamageAmount);
+	}	
+}
+
+void ABaseCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && Montage)
+	{
+		AnimInstance->Montage_Play(Montage);
+		AnimInstance->Montage_JumpToSection(SectionName, Montage);
+	}
+}
+
+int32 ABaseCharacter::PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionName)
+{
+	if (SectionName.Num() <= 0) return -1;
+	const int32 MaxSectionIndex = SectionName.Num() - 1;
+	const int32 Selection = FMath::RandRange(0, MaxSectionIndex);
+	PlayMontageSection(Montage, SectionName[Selection]);
+	return Selection;
+}
+
+int32 ABaseCharacter::PlayAttackMontage()
+{
+	return PlayRandomMontageSection(AttackOneHandedMontage, AttackMontageSections);
+}
+
+int32 ABaseCharacter::PlayDeathMontage()
+{
+	return PlayRandomMontageSection(DeathMontage, DeathMontageSections);
+}
+
+void ABaseCharacter::DisableCapsule()
+{
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
 void ABaseCharacter::AttackEnd()
 {
+	
 }
 
 bool ABaseCharacter::CanAttack()
 {
 	return false;
+}
+
+bool ABaseCharacter::IsAlive()
+{
+	return AttributeComponent &&AttributeComponent->IsAlive();
 }
 
 void ABaseCharacter::Tick(float DeltaTime)

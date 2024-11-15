@@ -17,6 +17,7 @@ class SLASHGAMECOURSE_API ABaseCharacter : public ACharacter, public IHitInterfa
 public:
 	ABaseCharacter();
 	virtual void Tick(float DeltaTime) override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
 
 protected:
 
@@ -30,9 +31,12 @@ protected:
 	void DisableCapsule();
 	virtual bool CanAttack();
 	virtual bool IsAlive();
+
+	/** Montage */
 	void PlayHitReactMontage(const FName& SectionName);
 	virtual int32 PlayAttackMontage();
 	virtual int32 PlayDeathMontage();
+	void StopAttackMontage();
 
 	UFUNCTION(BlueprintCallable)
 	virtual void AttackEnd();

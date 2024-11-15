@@ -34,6 +34,12 @@ ASlashCharacter::ASlashCharacter()
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
+	GetMesh()->SetCollisionObjectType(ECC_WorldDynamic);
+	GetMesh()->SetCollisionResponseToChannels(ECollisionResponse::ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
+	GetMesh()->SetGenerateOverlapEvents(true);
+
 	SpringArmComponent->bUsePawnControlRotation = true;
 
 }
@@ -58,6 +64,15 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	}
 
 }
+
+void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
+{
+	Super::GetHit_Implementation(ImpactPoint, Hitter);
+
+	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);
+	ActionState = EActionState::EAS_HitReaction;
+}
+
 
 void ASlashCharacter::BeginPlay()
 {
@@ -145,8 +160,6 @@ void ASlashCharacter::EKeyPressed()
 			{
 				CharacterState = ECharacterState::ECS_EquippedTwoHandedWeapon;
 			}
-			
-			
 		}
 	}
 	
@@ -216,6 +229,11 @@ void ASlashCharacter::AttachWeaponToHand()
 }
 
 void ASlashCharacter::FinishEquip()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
+void ASlashCharacter::HitReactEnd()
 {
 	ActionState = EActionState::EAS_Unoccupied;
 }

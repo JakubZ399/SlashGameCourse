@@ -27,7 +27,12 @@ public:
 	AWeapon();
 
 	void AttachMeshToSocket(USceneComponent* InParent, FName InSocketName);
+	void PlayEquipSound();
+	void DisableSphereCollision();
+	void DeactivateEmbers();
 	void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
+	void ExecuteGetHit(FHitResult BoxHit);
+	bool ActorIsSameType(AActor* OtherActor);
 
 	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 	EWeaponType WeaponType;
@@ -38,9 +43,6 @@ protected:
 
 	virtual void BeginPlay() override;
 	
-	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult) override;
-	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
-
 	UFUNCTION()
 	virtual void OnWeaponBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
@@ -49,6 +51,8 @@ protected:
 	
 private:
 
+	void BoxTrace(FHitResult& BoxHit);
+	
 	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* WeaponBox;
 
@@ -56,9 +60,6 @@ private:
 	USceneComponent* StartTracePoint;
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* EndTracePoint;
-	
-	UPROPERTY(VisibleAnywhere)
-	USpotLightComponent* SpotlightItem;
 	
 	UPROPERTY(EditAnywhere, Category = WeaponAudio)
 	USoundBase* EquipSound;

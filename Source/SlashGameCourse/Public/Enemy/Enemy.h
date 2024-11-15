@@ -23,7 +23,7 @@ public:
 	/** </AActor> */
 
 	/** <IHitInterface> */
-	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
 	/** </IHitInterface> */
 protected:
 
@@ -46,6 +46,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite)
 	TEnumAsByte<EDeathPose> DeathPose;
+
+	UPROPERTY(BlueprintReadOnly)
+	AActor* CombatTarget;
 
 private:
 
@@ -84,9 +87,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AWeapon> WeaponClass;
-	
-	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	AActor* CombatTarget;
 
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 1000.f;

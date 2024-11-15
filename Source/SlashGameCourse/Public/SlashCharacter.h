@@ -23,7 +23,9 @@ public:
 	ASlashCharacter();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
+	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
+	
 protected:
 	
 	virtual void BeginPlay() override;
@@ -45,6 +47,8 @@ protected:
 	void AttachWeaponToHand();
 	UFUNCTION(BlueprintCallable)
 	void FinishEquip();
+	UFUNCTION(BlueprintCallable)
+	void HitReactEnd();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputMappingContext* InputMappingContext;

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/HitInterface.h"
+#include "CharacterTypes.h"
 #include "BaseCharacter.generated.h"
 
 class AWeapon;
@@ -39,6 +40,12 @@ protected:
 	void StopAttackMontage();
 
 	UFUNCTION(BlueprintCallable)
+	FVector GetTranslationWarpTarget();
+
+	UFUNCTION(BlueprintCallable)
+	FVector GetRotationWarpTarget();
+
+	UFUNCTION(BlueprintCallable)
 	virtual void AttackEnd();
 	
 	UFUNCTION(BlueprintCallable)
@@ -49,28 +56,37 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, Category = Stats)
 	UAttributeComponent* AttributeComponent;
+	
+	UPROPERTY(BlueprintReadOnly)
+	AActor* CombatTarget;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	double WarpTargetDistance = 75.f;
+
+	UPROPERTY(BlueprintReadWrite)
+	TEnumAsByte<EDeathPose> DeathPose;
 
 private:
 
 	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);
 	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionName);
 	
-	UPROPERTY(EditAnywhere, Category = Audio)
+	UPROPERTY(EditAnywhere, Category = Combat)
 	USoundBase* HitSound;
 	
-	UPROPERTY(EditAnywhere, Category = Particle)
+	UPROPERTY(EditAnywhere, Category = Combat)
 	UParticleSystem* BloodParticle;
 	
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UPROPERTY(EditDefaultsOnly, Category = Combat)
 	UAnimMontage* AttackOneHandedMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UPROPERTY(EditDefaultsOnly, Category = Combat)
 	UAnimMontage* AttackTwoHandedMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = Animation)
+	UPROPERTY(EditDefaultsOnly, Category = Combat)
 	UAnimMontage* HitReactMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = Animation)
+	UPROPERTY(EditDefaultsOnly, Category = Combat)
 	UAnimMontage* DeathMontage;
 
 	UPROPERTY(EditAnywhere, Category = Combat)

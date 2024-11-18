@@ -30,7 +30,7 @@ protected:
 	USphereComponent* Sphere;
 
 	UPROPERTY(EditAnywhere, Category = Effetcs)
-	UNiagaraComponent* EmbersEffect;
+	UNiagaraComponent* ItemEffect;
 	
 private:
 	

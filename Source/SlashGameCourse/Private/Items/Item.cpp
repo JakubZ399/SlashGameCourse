@@ -15,8 +15,8 @@ AItem::AItem()
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	Sphere->SetupAttachment(RootComponent);
 
-	EmbersEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Embers Effects"));
-	EmbersEffect->SetupAttachment(GetRootComponent());
+	ItemEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Embers Effects"));
+	ItemEffect->SetupAttachment(GetRootComponent());
 }
 
 void AItem::BeginPlay()
@@ -31,20 +31,20 @@ void AItem::BeginPlay()
 void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
-	if (SlashCharacter)
+	IPickupInterface* HitInterface = Cast<IPickupInterface>(OtherActor);
+	if (HitInterface)
 	{
-		SlashCharacter->SetOverlapingItem(this);
+		HitInterface->SetOverlappingItem(this);
 	}
 }
 
 void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
-	if (SlashCharacter)
+	IPickupInterface* HitInterface = Cast<IPickupInterface>(OtherActor);
+	if (HitInterface)
 	{
-		SlashCharacter->SetOverlapingItem(nullptr);
+		HitInterface->SetOverlappingItem(nullptr);
 	}
 }
 
